@@ -1,0 +1,43 @@
+#region KeyVault
+############################## Create and Deploy the KeyVault and Keys ###############################
+$keyVaultName = "MyKeyVault1Commercial"
+$aadAppName = "MyApp1"
+$aadClientID = ""
+$aadClientSecret = ""
+$keyEncryptionKeyName = "MyKey1"
+
+# Create a new AD application
+Write-Host "Creating a new AD Application: $aadAppName..."
+$identifierUri = [string]::Format("http://localhost:8080/{0}",[Guid]::NewGuid().ToString("N"))
+$defaultHomePage = 'http://contoso.com'
+$now = [System.DateTime]::Now
+$oneYearFromNow = $now.AddYears(1)
+$aadClientSecret = [Guid]::NewGuid()
+$ADApp = New-AzureRmADApplication -DisplayName $aadAppName -HomePage $defaultHomePage -IdentifierUris $identifierUri -StartDate $now -EndDate $oneYearFromNow -Password $aadClientSecret
+$servicePrincipal = New-AzureRmADServicePrincipal -ApplicationId $ADApp.ApplicationId
+$aadClientID = $servicePrincipal.ApplicationId
+Write-Host "Successfully created a new AAD Application: $aadAppName with ID: $aadClientID"
+
+# Create the KeyVault
+Write-Host "Creating the KeyVault: $keyVaultName..."
+$keyVault = New-AzureRmKeyVault -VaultName $keyVaultName -ResourceGroupName $ResourceGroupName -Sku Standard -Location $Location;
+# Set the permissions to 'all' and Enable the DiskEncryption Policy
+Set-AzureRmKeyVaultAccessPolicy -VaultName $keyVaultName -ServicePrincipalName $aadClientID -PermissionsToKeys all -PermissionsToSecrets all
+Set-AzureRmKeyVaultAccessPolicy -VaultName $keyVaultName -EnabledForDiskEncryption
+$diskEncryptionKeyVaultUrl = $keyVault.VaultUri
+$keyVaultResourceId = $keyVault.ResourceId
+
+# Create the KeyEncryptionKey (KEK)
+Write-Host "Creating the KeyEncryptionKey (KEK): $keyEncryptionKeyName..."
+$kek = Add-AzureKeyVaultKey -VaultName $keyVaultName -Name $keyEncryptionKeyName -Destination Software
+$keyEncryptionKeyUrl = $kek.Key.Kid
+
+# Output the values of the KeyVault
+Write-Host "KeyVault values that will be needed to enable encryption on the VM" -foregroundcolor Cyan
+Write-Host "KeyVault Name: $keyVaultName" -foregroundcolor Cyan
+Write-Host "aadClientID: $aadClientID" -foregroundcolor Cyan
+Write-Host "aadClientSecret: $aadClientSecret" -foregroundcolor Cyan
+Write-Host "diskEncryptionKeyVaultUrl: $diskEncryptionKeyVaultUrl" -foregroundcolor Cyan
+Write-Host "keyVaultResourceId: $keyVaultResourceId" -foregroundcolor Cyan
+Write-Host "keyEncryptionKeyURL: $keyEncryptionKeyUrl" -foregroundcolor Cyan
+#endregion
