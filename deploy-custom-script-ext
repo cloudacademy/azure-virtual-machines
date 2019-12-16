@@ -1,0 +1,8 @@
+Set-AzureRmVMCustomScriptExtension -ResourceGroupName $resourceGroupName
+-VMName $vmName
+-Location $location
+-StorageAccountName $storageAccountName
+-ContainerName $containerName
+-FileName $scriptName
+-Name $extensionName
+-Run "InitializeDataDisk.ps1"
