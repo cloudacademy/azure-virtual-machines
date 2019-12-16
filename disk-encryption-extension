@@ -1,0 +1,14 @@
+#region Encryption Extension
+############################## Deploy the VM Encryption Extension ###############################
+# Build the encryption extension
+Write-Host "Deploying the VM Encryption Extension..."
+Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $resourceGroupName -VMName $vmName `
+-AadClientID $aadClientID -AadClientSecret $aadClientSecret `
+-DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $keyVaultResourceId `
+-VolumeType "OS" `
+-KeyEncryptionKeyUrl $keyEncryptionKeyUrl `
+-KeyEncryptionKeyVaultId $keyVaultResourceId `
+-Force
+
+Get-AzureRmVMDiskEncryptionStatus -ResourceGroupName $ResourceGroupName -VMName $VMName
+#endregion
