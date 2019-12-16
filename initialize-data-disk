@@ -1,0 +1,4 @@
+$PhysicalDisk = Get-PhysicalDisk | Where-Object CanPool -eq $true
+New-StoragePool -FriendlyName "StoragePool1" -StorageSubsystemFriendlyName "Storage Spaces*" -PhysicalDisks $PhysicalDisk
+$virtualDisk = New-VirtualDisk -StoragePoolFriendlyName "StoragePool1" -UseMaximumSize -ProvisioningType Fixed -ResiliencySettingName "Simple" - FriendlyName "DataDisk"
+$virtualDisk | Initialize-Disk -PassThru | New-Partition -AssignDriveLetter -UseMaximumSize | Format-Volume -Force -Confirm:$false
