@@ -1,0 +1,5 @@
+# Get the Extension
+Get-AzureRmVmImagePublisher -Location EastUS | Where-Object PublisherName -eq Microsoft.Powershell |
+Get-AzureRmVMExtensionImageType |
+Get-AzureRmVMExtensionImage |
+Select PublisherName,Type,Version | Sort-Object Version -Descending
