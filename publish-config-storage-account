@@ -1,0 +1,8 @@
+# help Publish-AzureRmVMDscConfiguration -ShowWindow
+
+#Publish configuration to storage account (creates <configFileName.ps1.zip> file)
+Publish-AzureRmVMDscConfiguration -ResourceGroupName $resourceGroupName
+-StorageAccountName $storageAccountName
+-ContainerName $DSCcontainer
+-ConfigurationPath ".\DSC_IIS.ps1"
+-Force
