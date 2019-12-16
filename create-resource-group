@@ -1,0 +1,3 @@
+# Create the Resource Group
+Write-Host "Creating ResourceGroup: $ResourceGroupName..."
+New-AzureRmResourceGroup -Name $ResourceGroupName -Location $Location
