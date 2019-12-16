@@ -1,0 +1,4 @@
+$resourceGroupName = "ExtensionRG"
+$targetVM  = "ExtensionVM"
+$storageAccountName = "dscscripts" # pre-provisioned
+$DSCcontainer = "powershellscripts" # must be lowercase letters
