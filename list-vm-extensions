@@ -1,0 +1,1 @@
+Get-Command -Module AzureRM.Compute -Verb Set -Noun *Extension
