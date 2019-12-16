@@ -1,0 +1,11 @@
+# help Set-AzureRmVMDscExtension -ShowWindow
+
+#Deploy the PowerShell DSC extension and invoke our configuration on the target Node
+Set-AzureRmVmDscExtension -Version "2.24"
+-ResourceGroupName $resourceGroupName
+-VMName $targetVM
+-ArchiveStorageAccountName $storageAccountName
+-ArchiveContainerName $DSCcontainer
+-ArchiveBlobName DSC_IIS.ps1.zip
+-ConfigurationName "DSC_IIS"
+-Force
