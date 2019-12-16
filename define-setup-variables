@@ -1,0 +1,9 @@
+#region Setup variables
+$resourceGroupName = "ExtensionRG"
+$vmName = "ExtensionVM"
+$extensionName = "InitializeDiskScript"
+$location = "EastUS"
+$storageAccountName = "dscscripts"
+$containerName = "powershellscripts"
+$scriptName = "InitializeDataDisk.ps1"
+#endregion
